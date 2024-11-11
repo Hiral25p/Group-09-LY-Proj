@@ -1,3 +1,4 @@
+# app.py
 import streamlit as st
 import os
 import cv2
@@ -7,6 +8,9 @@ from PIL import Image
 
 # Match Threshold
 THRESHOLD = 75
+
+# Page configuration
+st.set_page_config(page_title="Signature Forgery Detection", layout="centered")
 
 # Custom CSS for styling
 st.markdown("""
@@ -22,13 +26,7 @@ st.markdown("""
         color: #333333;
     }
 
-    /* Title and description styling */
-    h1, h3, p {
-        color: #ffffff;
-        text-align: left;
-        padding-left: 10px;
-    }
-    /* Title styling */
+    /* Title and Subtitle styling */
     .title {
         font-size: 36px;
         font-weight: bold;
@@ -36,37 +34,47 @@ st.markdown("""
         text-align: center;
         margin-top: 20px;
     }
-    /* Subtitle styling */
     .subtitle {
         font-size: 18px;
         color: #ffffff;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
     }
+
+    /* Section Header styling */
+    h1, h2, h3 {
+        color: #ffffff;
+        text-align: left;
+    }
+
     /* Button styling */
     .stButton button {
         background-color: lightslategray;
         color: azure;
         font-weight: bold;
+        border-radius: 5px;
+        padding: 8px 16px;
     }
+
     /* Image upload section styling */
-    .stFileUpload label, .stButton label {
+    .stFileUploader label {
         display: flex;
         justify-content: center;
-    }
-    /* File upload box */
-    .stFileUploader div {
-        background-color: #gray;
-        border-radius: 5px;
-        padding: 10px;
+        font-weight: bold;
         color: #333333;
+    }
+
+    /* Compare button alignment */
+    .compare-button {
+        text-align: center;
+        margin-top: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Streamlit Interface
-st.markdown("<div class='title'> 𓂃🖊 Signature Forgery Detection</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>Ensuring authenticity with precision by capturing, analyzing, and<br> comparing signature patterns to protect against forgery.</div>", unsafe_allow_html=True)
+# Title and Subtitle
+st.markdown("<div class='title'>🔍 Signature Forgery Detection</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>Verify the authenticity of signatures with precise analysis. Upload or capture two signature images for comparison.</div>", unsafe_allow_html=True)
 
 # Function to capture image from camera
 def capture_image_from_cam(sign=1):
@@ -101,9 +109,9 @@ def capture_image_from_cam(sign=1):
 def checkSimilarity(path1, path2):
     result = match(path1=path1, path2=path2)
     if result <= THRESHOLD:
-        st.error(f"Failure: Signatures Do Not Match. Similarity: {result} %")
+        st.error(f"❌ Signatures Do Not Match. Similarity: {result:.2f} %")
     else:
-        st.success(f"Success: Signatures Match! Similarity: {result} %")
+        st.success(f"✅ Signatures Match! Similarity: {result:.2f} %")
     return result
 
 # Ensure the 'temp' directory exists
@@ -144,8 +152,8 @@ with col2:
         st.image(Image.open(image2_path), caption="Signature 2", use_column_width=True)
 
 # Compare button centered below both columns
-st.markdown("<div style='text-align: center; margin-top: 20px;'>", unsafe_allow_html=True)
-if st.button("Compare Signatures"):
+st.markdown("<div class='compare-button'>", unsafe_allow_html=True)
+if st.button("🔍 Compare Signatures"):
     if 'image1_path' in locals() and 'image2_path' in locals():
         checkSimilarity(image1_path, image2_path)
     else:

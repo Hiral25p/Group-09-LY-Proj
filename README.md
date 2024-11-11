@@ -64,7 +64,7 @@ pip install -r requirements.txt
 
 - Upload your signature image documents through the provided interface for processing and get a result.
 
-![image](https://github.com/user-attachments/assets/9f5eea4c-2c07-4df5-a29c-2fc59ddae0e0)
+![image](https://github.com/user-attachments/assets/6109673b-f527-4995-bbe4-399affd37416)
   
 - Image anomaly detection interface.
 
